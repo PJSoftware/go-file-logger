@@ -1,0 +1,42 @@
+= go-logging: v0.0.1
+
+This is a drop-in replacement for the standard "log" package.
+
+To use it, replace any `import "log"` lines with:
+
+[,go]
+----
+import log "github.com/pjsoftware/go-logging"
+----
+
+Additionally, you will need to include the following in your `main()` function:
+
+[,go]
+----
+log.InitLog(log.WindowsRootFolder, appName)
+defer log.Close()
+----
+
+`go-logging` currently supports the following subset of the standard "log" package:
+
+- `log.Printf(format, ...)`
+- `log.Fatalf(format, ...)`
+
+Essentially it outputs in the format:
+
+----
+YYYY/MM/DD hh:mm:ss [appName] message
+----
+
+Additionally, if using it for a sub-package, you can do this:
+
+[,go]
+----
+log.Lib(libName).Printf(format, ...)
+----
+
+and it will output as:
+
+----
+YYYY/MM/DD hh:mm:ss [appName:libName] message
+----
