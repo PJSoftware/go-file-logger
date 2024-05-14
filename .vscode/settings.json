@@ -1,4 +1,10 @@
 {
-  "cSpell.words": ["gologging", "initialised", "Initialising"],
+  "cSpell.words": [
+    "Fatalf",
+    "gologging",
+    "initialised",
+    "Initialising",
+    "Println"
+  ],
   "asciidoc.antora.enableAntoraSupport": true
 }

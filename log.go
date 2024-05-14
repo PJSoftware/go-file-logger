@@ -72,12 +72,18 @@ func (log *Log) Printf(format string, a ...any) {
 func Printf(format string, a ...any) {
 	log := getLogInstance()
 	msg := fmt.Sprintf(format, a...)
-	prefix := log.app
-	if log.lib != "" {
-		prefix += ":" + log.lib
-		log.lib = ""
-	}
+	prefix := log.prefix()
+	clog.Printf("[%s] %s", prefix, msg)
+}
 
+func (log *Log) Println(v ...any) {
+	Println(v...)
+}
+
+func Println(v ...any) {
+	log := getLogInstance()
+	msg := concat(v...)
+	prefix := log.prefix()
 	clog.Printf("[%s] %s", prefix, msg)
 }
 
@@ -88,11 +94,37 @@ func (log *Log) Fatalf(format string, a ...any) {
 func Fatalf(format string, a ...any) {
 	log := getLogInstance()
 	msg := fmt.Sprintf(format, a...)
+	prefix := log.prefix()
+	clog.Fatalf("[%s] %s", prefix, msg)
+}
+
+func (log *Log) Panic(v ...any) {
+	Panic(v...)
+}
+
+func Panic(v ...any) {
+	log := getLogInstance()
+	msg := concat(v...)
+	prefix := log.prefix()
+	clog.Panicf("[%s] %s", prefix, msg)
+}
+
+func concat(v ...any) string {
+	msg := ""
+	for _, val := range v {
+		if msg != "" {
+			msg += " "
+			msg += fmt.Sprintf("%v", val)
+		}
+	}
+	return msg
+}
+
+func (log *Log) prefix() string {
 	prefix := log.app
 	if log.lib != "" {
-		prefix += "." + log.lib
+		prefix += ":" + log.lib
 		log.lib = ""
 	}
-
-	clog.Fatalf("[%s] %s", prefix, msg)
+	return prefix
 }
