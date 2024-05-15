@@ -1,44 +1,34 @@
-= go-logging: v0.0.2
+= go-file-logger: v0.0.3
 
-This is a drop-in replacement for the standard "log" package.
+For use with the standard "log" and "slog" libraries.
 
-To use it, replace any `import "log"` lines with:
-
-[,go]
-----
-import log "github.com/pjsoftware/go-logging"
-----
-
-Additionally, you will need to include the following in your `main()` function:
+This package generates a log file link that is useful for command-line programs; less so for long-running services.
 
 [,go]
 ----
-log.InitLog(log.WindowsRootFolder, appName)
-defer log.Close()
+import flog "github.com/pjsoftware/go-file-logger"
+
+logFile := flog.LogWriter(appName)
+defer logFile.Close()
 ----
 
-`go-logging` currently supports the following subset of the standard "log" package:
-
-- `log.Fatalf(format, a...)`
-- `log.Panic(v...)`
-- `log.Printf(format, a...)`
-- `log.Println(v...)`
-
-Essentially it outputs in the format:
-
-----
-YYYY/MM/DD hh:mm:ss [appName] message
-----
-
-Additionally, if using it for a sub-package, you can do this:
+To use this with `log`:
 
 [,go]
 ----
-log.Lib(libName).Printf(format, ...)
+defaultLogger := log.Default()
+defaultLogger.SetOutput(logFile)
 ----
 
-and it will output as:
+To use this with `slog`:
+
+[,go]
+----
+logger := slog.New(slog.NewJSONHandler(logFile, nil))
+----
+
+The file will be created as:
 
 ----
-YYYY/MM/DD hh:mm:ss [appName:libName] message
+c:\LogFiles\YYYY\MM\DD\YYYYMMDD-appName.log
 ----
