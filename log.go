@@ -1,7 +1,9 @@
-package flogger
+package flog
 
 import (
 	"fmt"
+	"log"
+	"log/slog"
 	"os"
 	"time"
 )
@@ -20,4 +22,19 @@ func LogWriter(app string) *os.File {
 	}
 
 	return file
+}
+
+func UseLog(logFile *os.File) {
+	defaultLogger := log.Default()
+	defaultLogger.SetOutput(logFile)
+}
+
+func UseSLogText(logFile *os.File, opts *slog.HandlerOptions) {
+	l := slog.New(slog.NewTextHandler(logFile, opts))
+	slog.SetDefault(l)
+}
+
+func UseSLogJSON(logFile *os.File, opts *slog.HandlerOptions) {
+	l := slog.New(slog.NewJSONHandler(logFile, opts))
+	slog.SetDefault(l)
 }

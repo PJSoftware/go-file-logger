@@ -1,4 +1,4 @@
-= go-file-logger: v0.0.3
+= go-file-logger: v0.0.4
 
 For use with the standard "log" and "slog" libraries.
 
@@ -16,15 +16,21 @@ To use this with `log`:
 
 [,go]
 ----
-defaultLogger := log.Default()
-defaultLogger.SetOutput(logFile)
+flog.UseLog(logFile)
 ----
 
 To use this with `slog`:
 
 [,go]
 ----
-logger := slog.New(slog.NewJSONHandler(logFile, nil))
+logger := flog.UseSLogJSON(logFile, opts)
+----
+
+or
+
+[,go]
+----
+logger := flog.UseSLogText(logFile, opts)
 ----
 
 The file will be created as:
