@@ -10,7 +10,7 @@ import (
 
 const defaultFolder = "C:/LogFiles"
 
-func rootFolder() string {
+func defaultRootFolder() string {
 	folder := os.Getenv("FILE_LOGGER_FOLDER")
 	if folder != "" {
 		return folder
@@ -19,9 +19,13 @@ func rootFolder() string {
 	return defaultFolder
 }
 
-func LogWriter(app string) *os.File {
+func LogWriter(app string, rootFolder string) *os.File {
 	now := time.Now()
-	folder := fmt.Sprintf("%s/%4d/%02d/%02d", rootFolder(), now.Year(), now.Month(), now.Day())
+	if rootFolder == "" {
+		rootFolder = defaultRootFolder()
+	}
+
+	folder := fmt.Sprintf("%s/%4d/%02d/%02d", defaultRootFolder(), now.Year(), now.Month(), now.Day())
 	fileName := fmt.Sprintf("%4d%02d%02d-%s.log", now.Year(), now.Month(), now.Day(), app)
 	os.MkdirAll(folder, 0777)
 

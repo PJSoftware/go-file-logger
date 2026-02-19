@@ -1,4 +1,4 @@
-= go-file-logger: v0.0.4
+= go-file-logger: v0.0.6
 
 For use with the standard "log" and "slog" libraries.
 
@@ -8,7 +8,7 @@ This package generates a log file link that is useful for command-line programs;
 ----
 import flog "github.com/pjsoftware/go-file-logger"
 
-logFile := flog.LogWriter(appName)
+logFile := flog.LogWriter(appName, rootFolder)
 defer logFile.Close()
 ----
 
@@ -16,7 +16,7 @@ To use this with `log`:
 
 [,go]
 ----
-flog.UseLog(logFile)
+flog.UseLog(logFile, "/usr/log")
 ----
 
 To use this with `slog`:
@@ -33,8 +33,13 @@ or
 logger := flog.UseSLogText(logFile, opts)
 ----
 
+If rootFolder is specified as an empty string, "C:\LogFiles" will be used.
+
+The specified root folder will be created if it does not already exist.
+It is strongly recommended that the rootFolder be specified in absolute terms.
+
 The file will be created as:
 
 ----
-c:\LogFiles\YYYY\MM\DD\YYYYMMDD-appName.log
+<rootFolder>\YYYY\MM\DD\YYYYMMDD-appName.log
 ----
