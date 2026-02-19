@@ -4,7 +4,7 @@ import (
 	"log"
 	"log/slog"
 
-	"github.com/pjsoftware/go-file-logger"
+	flog "github.com/pjsoftware/go-file-logger"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 }
 
 func testMixedLogOutput() {
-	logFile := flog.LogWriter("test-mixed-log")
+	logFile := flog.LogWriter("test-mixed-log", "")
 	defer logFile.Close()
 	flog.UseLog(logFile)
 
@@ -24,10 +24,10 @@ func testMixedLogOutput() {
 }
 
 func testMixedSLogJSONOutput() {
-	logFile := flog.LogWriter("test-mixed-slogJSON")
+	logFile := flog.LogWriter("test-mixed-slogJSON", "")
 	defer logFile.Close()
-	
-	opts := &slog.HandlerOptions{ Level: slog.LevelDebug, AddSource: true }
+
+	opts := &slog.HandlerOptions{Level: slog.LevelDebug, AddSource: true}
 	flog.UseSLogJSON(logFile, opts)
 
 	log.Print("Log message via log.Print()")
@@ -36,12 +36,12 @@ func testMixedSLogJSONOutput() {
 }
 
 func testMixedSLogTextOutput() {
-	logFile := flog.LogWriter("test-mixed-slogText")
+	logFile := flog.LogWriter("test-mixed-slogText", "")
 	defer logFile.Close()
 
 	lvl := new(slog.LevelVar)
 	lvl.Set(slog.LevelInfo)
-	opts := &slog.HandlerOptions{ AddSource: true, Level: lvl }
+	opts := &slog.HandlerOptions{AddSource: true, Level: lvl}
 	flog.UseSLogText(logFile, opts)
 
 	log.Print("Log message 1 via log.Print()")
