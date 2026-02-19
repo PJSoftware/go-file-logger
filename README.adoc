@@ -1,4 +1,4 @@
-= go-file-logger: v0.0.4
+= go-file-logger: v0.0.6
 
 For use with the standard "log" and "slog" libraries.
 
