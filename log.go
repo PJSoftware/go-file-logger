@@ -25,7 +25,7 @@ func LogWriter(app string, rootFolder string) *os.File {
 		rootFolder = defaultRootFolder()
 	}
 
-	folder := fmt.Sprintf("%s/%4d/%02d/%02d", defaultRootFolder(), now.Year(), now.Month(), now.Day())
+	folder := fmt.Sprintf("%s/%4d/%02d/%02d", rootFolder, now.Year(), now.Month(), now.Day())
 	fileName := fmt.Sprintf("%4d%02d%02d-%s.log", now.Year(), now.Month(), now.Day(), app)
 	os.MkdirAll(folder, 0777)
 
